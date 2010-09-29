@@ -1,0 +1,5 @@
+This is a MatLab GUI tools to analyze the mechanical test data. 
+
+It will first ask for baseline file and then the real test data file and you can move the slider to find the best elastic region and do the curve fitting.
+
+Still under alpha stage so further rigorious updates will be pushed.
