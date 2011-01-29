@@ -22,7 +22,7 @@ function varargout = cal_mech(varargin)
 
 % Edit the above text to modify the response to help cal_mech
 
-% Last Modified by GUIDE v2.5 26-Sep-2010 21:56:40
+% Last Modified by GUIDE v2.5 28-Jan-2011 15:31:31
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -117,7 +117,6 @@ end
 set(handles.base_file_edit1,'String',BFILE);
 ISBASEFILE=1;
 [BMATSIZE,l]=size(BMATRIX);
-disp(BMATSIZE)
 guidata(hObject, handles);
 
 % --- Executes on slider movement.
@@ -131,15 +130,15 @@ function plot_range_slider1_Callback(hObject, eventdata, handles)
 global BMATRIX;
 global DMATRIX;
 global BMATSIZE;
-global DSIZE;
 sliderValue=get(handles.plot_range_slider1,'Value');
-sliderRange=floor(sliderValue/100*DSIZE);
+sliderRange=floor(sliderValue/100*BMATSIZE);
+startValue=get(handles.start_range_slider,'Value');
+startRange=floor(startValue)+1;
 avg_width=mean_width(handles);
 avg_length=mean_length(handles);
 init_length=str2double(get(handles.init_length_edit,'String'));
-strain=(DMATRIX(1:sliderRange,5)).*2540./init_length;
-stress_raw=(DMATRIX(1:sliderRange,1)-BMATRIX(1:sliderRange,2)).*4447.5./(avg_length*avg_width);
-stress=smooth(stress_raw,3);
+strain=(DMATRIX(startRange:sliderRange,5)).*2540./init_length;
+stress=(DMATRIX(startRange:sliderRange,1)-BMATRIX(startRange:sliderRange,2)).*4447.5./(avg_length*avg_width);
 compensation=stress(1);
 stress=stress-compensation;
 axes(handles.axes1);
@@ -171,16 +170,13 @@ function length_edit1_Callback(hObject, eventdata, handles)
 global BMATRIX;
 global DMATRIX;
 global BMATSIZE;
-global DSIZE;
 sliderValue=get(handles.plot_range_slider1,'Value');
 sliderRange=floor(sliderValue/100*BMATSIZE);
 avg_width=mean_width(handles);
 avg_length=mean_length(handles);
 init_length=str2double(get(handles.init_length_edit,'String'));
-strain=(DMATRIX(1:DSIZE,5)).*2540./init_length;
-% Try the smooth method
-stress_raw=(DMATRIX(1:DSIZE,1)-BMATRIX(1:DSIZE,2)).*4447.5./(avg_length*avg_width);
-stress=smooth(stress_raw,3);
+strain=(DMATRIX(1:sliderRange,5)).*2540./init_length;
+stress=(DMATRIX(1:sliderRange,1)-BMATRIX(1:sliderRange,2)).*4447.5./(avg_length*avg_width);
 compensation=stress(1);
 stress=stress-compensation;
 axes(handles.axes1);
@@ -212,16 +208,13 @@ function length_edit2_Callback(hObject, eventdata, handles)
 global BMATRIX;
 global DMATRIX;
 global BMATSIZE;
-global DSIZE;
 sliderValue=get(handles.plot_range_slider1,'Value');
 sliderRange=floor(sliderValue/100*BMATSIZE);
 avg_width=mean_width(handles);
 avg_length=mean_length(handles);
 init_length=str2double(get(handles.init_length_edit,'String'));
-strain=(DMATRIX(1:DSIZE,5)).*2540./init_length;
-% Try the smooth method
-stress_raw=(DMATRIX(1:DSIZE,1)-BMATRIX(1:DSIZE,2)).*4447.5./(avg_length*avg_width);
-stress=smooth(stress_raw,3);
+strain=(DMATRIX(1:sliderRange,5)).*2540./init_length;
+stress=(DMATRIX(1:sliderRange,1)-BMATRIX(1:sliderRange,2)).*4447.5./(avg_length*avg_width);
 compensation=stress(1);
 stress=stress-compensation;
 axes(handles.axes1);
@@ -253,18 +246,13 @@ function length_edit3_Callback(hObject, eventdata, handles)
 global BMATRIX;
 global DMATRIX;
 global BMATSIZE;
-global DSIZE;
 sliderValue=get(handles.plot_range_slider1,'Value');
 sliderRange=floor(sliderValue/100*BMATSIZE);
 avg_width=mean_width(handles);
 avg_length=mean_length(handles);
 init_length=str2double(get(handles.init_length_edit,'String'));
-strain=(DMATRIX(1:DSIZE,5)).*2540./init_length;
-% Try the smooth method
-strain=(DMATRIX(1:DSIZE,5)).*2540./init_length;
-% Try the smooth method
-stress_raw=(DMATRIX(1:DSIZE,1)-BMATRIX(1:DSIZE,2)).*4447.5./(avg_length*avg_width);
-stress=smooth(stress_raw,3);
+strain=(DMATRIX(1:sliderRange,5)).*2540./init_length;
+stress=(DMATRIX(1:sliderRange,1)-BMATRIX(1:sliderRange,2)).*4447.5./(avg_length*avg_width);
 compensation=stress(1);
 stress=stress-compensation;
 axes(handles.axes1);
@@ -296,16 +284,13 @@ function width_edit1_Callback(hObject, eventdata, handles)
 global BMATRIX;
 global DMATRIX;
 global BMATSIZE;
-global DSIZE;
 sliderValue=get(handles.plot_range_slider1,'Value');
 sliderRange=floor(sliderValue/100*BMATSIZE);
 avg_width=mean_width(handles);
 avg_length=mean_length(handles);
 init_length=str2double(get(handles.init_length_edit,'String'));
-strain=(DMATRIX(1:DSIZE,5)).*2540./init_length;
-% Try the smooth method
-stress_raw=(DMATRIX(1:DSIZE,1)-BMATRIX(1:DSIZE,2)).*4447.5./(avg_length*avg_width);
-stress=smooth(stress_raw,3);
+strain=(DMATRIX(1:sliderRange,5)).*2540./init_length;
+stress=(DMATRIX(1:sliderRange,1)-BMATRIX(1:sliderRange,2)).*4447.5./(avg_length*avg_width);
 compensation=stress(1);
 stress=stress-compensation;
 axes(handles.axes1);
@@ -337,16 +322,13 @@ function width_edit2_Callback(hObject, eventdata, handles)
 global BMATRIX;
 global DMATRIX;
 global BMATSIZE;
-global DSIZE;
 sliderValue=get(handles.plot_range_slider1,'Value');
 sliderRange=floor(sliderValue/100*BMATSIZE);
 avg_width=mean_width(handles);
 avg_length=mean_length(handles);
 init_length=str2double(get(handles.init_length_edit,'String'));
-strain=(DMATRIX(1:DSIZE,5)).*2540./init_length;
-% Try the smooth method
-stress_raw=(DMATRIX(1:DSIZE,1)-BMATRIX(1:DSIZE,2)).*4447.5./(avg_length*avg_width);
-stress=smooth(stress_raw,3);
+strain=(DMATRIX(1:sliderRange,5)).*2540./init_length;
+stress=(DMATRIX(1:sliderRange,1)-BMATRIX(1:sliderRange,2)).*4447.5./(avg_length*avg_width);
 compensation=stress(1);
 stress=stress-compensation;
 axes(handles.axes1);
@@ -378,16 +360,13 @@ function width_edit3_Callback(hObject, eventdata, handles)
 global BMATRIX;
 global DMATRIX;
 global BMATSIZE;
-global DSIZE;
 sliderValue=get(handles.plot_range_slider1,'Value');
 sliderRange=floor(sliderValue/100*BMATSIZE);
 avg_width=mean_width(handles);
 avg_length=mean_length(handles);
 init_length=str2double(get(handles.init_length_edit,'String'));
-strain=(DMATRIX(1:DSIZE,5)).*2540./init_length;
-% Try the smooth method
-stress_raw=(DMATRIX(1:DSIZE,1)-BMATRIX(1:DSIZE,2)).*4447.5./(avg_length*avg_width);
-stress=smooth(stress_raw,3);
+strain=(DMATRIX(1:sliderRange,5)).*2540./init_length;
+stress=(DMATRIX(1:sliderRange,1)-BMATRIX(1:sliderRange,2)).*4447.5./(avg_length*avg_width);
 compensation=stress(1);
 stress=stress-compensation;
 axes(handles.axes1);
@@ -419,17 +398,13 @@ function init_length_edit_Callback(hObject, eventdata, handles)
 global BMATRIX;
 global DMATRIX;
 global BMATSIZE;
-global DSIZE
-
 sliderValue=get(handles.plot_range_slider1,'Value');
 sliderRange=floor(sliderValue/100*BMATSIZE);
 avg_width=mean_width(handles);
 avg_length=mean_length(handles);
 init_length=str2double(get(handles.init_length_edit,'String'));
-strain=(DMATRIX(1:DSIZE,5)).*2540./init_length;
-% Try the smooth method
-stress_raw=(DMATRIX(1:DSIZE,1)-BMATRIX(1:DSIZE,2)).*4447.5./(avg_length*avg_width);
-stress=smooth(stress_raw,3);
+strain=(DMATRIX(1:sliderRange,5)).*2540./init_length;
+stress=(DMATRIX(1:sliderRange,1)-BMATRIX(1:sliderRange,2)).*4447.5./(avg_length*avg_width);
 compensation=stress(1);
 stress=stress-compensation;
 axes(handles.axes1);
@@ -458,23 +433,18 @@ function calculate_pushbutton_Callback(hObject, eventdata, handles)
 global BMATRIX;
 global DMATRIX;
 global BMATSIZE;
-global DSIZE;
 sliderValue=get(handles.plot_range_slider1,'Value');
-sliderRange=floor(sliderValue/100*DSIZE);
+sliderRange=floor(sliderValue/100*BMATSIZE);
 avg_width=mean_width(handles);
 avg_length=mean_length(handles);
 init_length=str2double(get(handles.init_length_edit,'String'));
 strain=(DMATRIX(1:sliderRange,5)).*2540./init_length;
-stress_raw=(DMATRIX(1:sliderRange,1)-BMATRIX(1:sliderRange,2)).*4447.5./(avg_length*avg_width);
-stress=smooth(stress_raw,3);
+stress=(DMATRIX(1:sliderRange,1)-BMATRIX(1:sliderRange,2)).*4447.5./(avg_length*avg_width);
 compensation=stress(1);
 stress=stress-compensation;
 slope=strain\stress;
 set(handles.modulus_result,'String',num2str(slope*100));
-%mm_stress_raw=(DMATRIX(1:DSIZE,1)-BMATRIX(1:DSIZE,2)).*4447.5./(avg_length*avg_width)+compensation;
-mm_stress_raw=(DMATRIX(1:DSIZE,1)).*4447.5./(avg_length*avg_width)+compensation;
-m_stress=smooth(mm_stress_raw,3);
-strength=max(m_stress);
+strength=max((DMATRIX(1:BMATSIZE,1)-BMATRIX(1:BMATSIZE,2)).*4447.5./(avg_length*avg_width)+compensation);
 set(handles.tensile_strength_result,'String',num2str(strength));
 axes(handles.axes1);
 plot(strain,stress,'r*',strain,slope*strain,'b-');
@@ -514,7 +484,6 @@ global DMATRIX;
 global ISDATAFILE;
 global BMATRIX;
 global BMATSIZE;
-global DSIZE
 DFILE=strcat(pathname,filename);
 DMATRIX=csvread(DFILE,12,0);
 if (~exist('DMATRIX','var'))
@@ -522,20 +491,18 @@ if (~exist('DMATRIX','var'))
     guidata(hObject,handles);
     return;
 end
-[DSIZE l]=size(DMATRIX);
-set(handles.data_file_edit,'String',filename);
+set(handles.data_file_edit,'String',DFILE);
 ISDATAFILE=1; % Make sure that the datafile is selected.
 % Calculate the average width
 avg_width=mean_width(handles);
 avg_length=mean_length(handles);
 init_length=str2double(get(handles.init_length_edit,'String'));
-if (DSIZE>BMATSIZE)
-    DSIZE=BMATSIZE;
+[DMATSIZE l]=size(DMATRIX);
+if DMATSIZE <= BMATSIZE
+    BMATSIZE=DMATSIZE;
 end
-strain=(DMATRIX(1:DSIZE,5)).*2540./init_length;
-% Try the smooth method
-stress_raw=(DMATRIX(1:DSIZE,1)-BMATRIX(1:DSIZE,2)).*4447.5./(avg_length*avg_width);
-stress=smooth(stress_raw,3);
+strain=(DMATRIX(1:BMATSIZE,5)).*2540./init_length;
+stress=(DMATRIX(1:BMATSIZE,1)-BMATRIX(1:BMATSIZE,2)).*4447.5./(avg_length*avg_width);
 compensation=stress(1);
 stress=stress-compensation;
 axes(handles.axes1);
@@ -604,4 +571,44 @@ length1=str2double(get(handles.length_edit1,'String'));
 length2=str2double(get(handles.length_edit2,'String'));
 length3=str2double(get(handles.length_edit3,'String'));
 avg_length=(length1+length2+length3)/3.0;
+
+
+% --- Executes on slider movement.
+function start_range_slider_Callback(hObject, eventdata, handles)
+% hObject    handle to start_range_slider (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+global BMATRIX;
+global DMATRIX;
+global BMATSIZE;
+sliderValue=get(handles.plot_range_slider1,'Value');
+sliderRange=floor(sliderValue/100*BMATSIZE);
+startValue=get(handles.start_range_slider,'Value');
+startRange=floor(startValue)+1;
+avg_width=mean_width(handles);
+avg_length=mean_length(handles);
+init_length=str2double(get(handles.init_length_edit,'String'));
+strain=(DMATRIX(startRange:sliderRange,5)).*2540./init_length;
+stress=(DMATRIX(startRange:sliderRange,1)-BMATRIX(startRange:sliderRange,2)).*4447.5./(avg_length*avg_width);
+compensation=stress(1);
+stress=stress-compensation;
+axes(handles.axes1);
+plot(strain,stress,'r*');
+xlabel('Strain (%)');
+ylabel('Stress (KPa)');
+
+% --- Executes during object creation, after setting all properties.
+function start_range_slider_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to start_range_slider (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
 
