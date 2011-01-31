@@ -435,11 +435,13 @@ global DMATRIX;
 global BMATSIZE;
 sliderValue=get(handles.plot_range_slider1,'Value');
 sliderRange=floor(sliderValue/100*BMATSIZE);
+startValue=get(handles.start_range_slider,'Value');
+startRange=floor(startValue)+1;
 avg_width=mean_width(handles);
 avg_length=mean_length(handles);
 init_length=str2double(get(handles.init_length_edit,'String'));
-strain=(DMATRIX(1:sliderRange,5)).*2540./init_length;
-stress=(DMATRIX(1:sliderRange,1)-BMATRIX(1:sliderRange,2)).*4447.5./(avg_length*avg_width);
+strain=(DMATRIX(startRange:sliderRange,5)).*2540./init_length;
+stress=(DMATRIX(startRange:sliderRange,1)-BMATRIX(startRange:sliderRange,2)).*4447.5./(avg_length*avg_width);
 compensation=stress(1);
 stress=stress-compensation;
 slope=strain\stress;
@@ -510,6 +512,7 @@ plot(strain,stress,'r*');
 xlabel('Strain (%)');
 ylabel('Stress (KPa)');
 set(handles.plot_range_slider1,'Value',100)
+set(handles.start_range_slider,'Value',0)
 set(handles.calculate_pushbutton,'Enable','on');
 guidata(hObject, handles);
 
