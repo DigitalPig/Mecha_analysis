@@ -22,7 +22,7 @@ function varargout = cal_mech(varargin)
 
 % Edit the above text to modify the response to help cal_mech
 
-% Last Modified by GUIDE v2.5 28-Jan-2011 15:31:31
+% Last Modified by GUIDE v2.5 30-Mar-2011 18:35:20
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -436,7 +436,8 @@ global BMATSIZE;
 sliderValue=get(handles.plot_range_slider1,'Value');
 sliderRange=floor(sliderValue/100*BMATSIZE);
 startValue=get(handles.start_range_slider,'Value');
-startRange=floor(startValue)+1;
+%startRange=floor(startValue)+1;
+startRange=floor(startValue/100*BMATSIZE);
 avg_width=mean_width(handles);
 avg_length=mean_length(handles);
 init_length=str2double(get(handles.init_length_edit,'String'));
@@ -444,7 +445,13 @@ strain=(DMATRIX(startRange:sliderRange,5)).*2540./init_length;
 stress=(DMATRIX(startRange:sliderRange,1)-BMATRIX(startRange:sliderRange,2)).*4447.5./(avg_length*avg_width);
 compensation=stress(1);
 stress=stress-compensation;
-slope=strain\stress;
+%slope=strain\stress;
+% I need a better fitting here.
+g=fittype('a*x+b',...
+          'independent','x');
+c2=fit(strain,stress,g);
+pre_slope=coeffvalues(c2);
+slope=pre_slope(1,1);
 set(handles.modulus_result,'String',num2str(slope*100));
 strength=max((DMATRIX(1:BMATSIZE,1)-BMATRIX(1:BMATSIZE,2)).*4447.5./(avg_length*avg_width)+compensation);
 set(handles.tensile_strength_result,'String',num2str(strength));
@@ -613,5 +620,3 @@ function start_range_slider_CreateFcn(hObject, eventdata, handles)
 if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
-
-
